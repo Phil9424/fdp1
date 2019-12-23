@@ -1,13 +1,13 @@
 {
   "id" : "message.author.id",
-    "wins" : 1,
-    "total_played" : 3,
-    "winrate" : 33,
+    "wins" : 3,
+    "total_played" : 4,
+    "winrate" : 75,
     "winmir" : 1,
-    "windon" : 0,
+    "windon" : 1,
     "winsher" : 0,
-    "winmaff" : 0,
+    "winmaff" : 1,
     "windoc" : 0,
-    "rating" : 2700,
-    "commun" : 3400
+    "rating" : 4765,
+    "commun" : 2376
 }
