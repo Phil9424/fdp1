@@ -1,5 +1,5 @@
 {
-  "id" : client.users.get,
+  "id" : "client.users.get",
     "wins" : 3,
     "total_played" : 4,
     "winrate" : 75,
