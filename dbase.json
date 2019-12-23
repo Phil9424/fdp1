@@ -1,5 +1,5 @@
 {
-  "id" : message.author.id,
+  "id" : client.users.get("user id here"),
     "wins" : 3,
     "total_played" : 4,
     "winrate" : 75,
