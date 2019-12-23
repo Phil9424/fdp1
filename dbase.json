@@ -1,5 +1,5 @@
 {
-  "id" : "user.id",
+  "id" : "message.author.id",
     "wins" : 3,
     "total_played" : 4,
     "winrate" : 75,
