@@ -1,3 +1,3 @@
 module.exports = {
-    token: 'TOKEN GOES HERE',
+    token: process.env.DISCORD_BOT_TOKEN || 'TOKEN GOES HERE',
 }

@@ -19,7 +19,20 @@ Join our public Mafia server if you want to try out the bot: http://discord.me/m
 ## Config
 
 Setup all the admin user ID values in `config.js`  
-Setup the bot's user token in `creds.js` (follow the [Discord developer guide](https://discordapp.com/developers/docs/intro) to get the token)  
+
+### Bot Token Configuration
+There are two ways to set up the bot token:
+
+1. **Recommended: Using Environment Variables** (more secure)
+   - Create a `.env` file in the root directory based on the `.env.example` file
+   - Add your Discord bot token: `DISCORD_BOT_TOKEN=your_actual_token_here`
+   - The bot will automatically load this token at startup
+
+2. **Alternative: Direct Configuration** (less secure, not recommended for production)
+   - Edit the `creds.js` file directly to set your token
+   - This method is not recommended as it risks exposing your token in version control
+
+Follow the [Discord developer guide](https://discordapp.com/developers/docs/intro) to get your bot token.
 
 ## Run
 

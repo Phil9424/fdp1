@@ -3,6 +3,13 @@
 global.pre = '--'; // command prefix that can be used across all files
 global.bulletKill = 0.314; // sentinel number for differentiating bullet kills from other kills
 
+// Add dotenv support for environment variables
+try {
+  require('dotenv').config();
+} catch (e) {
+  console.log('dotenv not installed, using environment variables directly');
+}
+
 // requires
 const fs = require('fs');
 const config = require('./config.js');
