@@ -148,10 +148,28 @@ var getPlayerFromString = (str, channelId) => {
 var getGameFromPlayer = (playerId) => {
     return _.find(data.games, function(game) { return _.find(game.players, {id: playerId}); });
 }
+// Load admins from database if it exists
+var getAdminsFromDB = () => {
+    try {
+        const dbData = JSON.parse(fs.readFileSync('./dbase.json').toString());
+        return dbData.admins || [];
+    } catch (e) {
+        return [];
+    }
+};
+
 var adminCheck = message => {
+    // Check config.admins first (which now comes from creds.js)
     if (config.admins.indexOf(message.author.id) >= 0) {
         return true;
     }
+    
+    // Then check database admins if not in config
+    const dbAdmins = getAdminsFromDB();
+    if (dbAdmins.indexOf(message.author.id) >= 0) {
+        return true;
+    }
+    
     mafiabot.reply(message, `You must be an admin to perform command *${message.content}*!`);
     return false;
 };
@@ -655,7 +673,116 @@ var baseCommands = [
         adminOnly: false,
         activatedOnly: false,
         onMessage: message => {
-            mafiabot.sendMessage(message.channel.id, `Admins of MafiaBot:${listUsers(config.admins)}`);
+            // Combine admins from config and database
+            const dbAdmins = getAdminsFromDB();
+            const allAdmins = _.uniq([...config.admins, ...dbAdmins]);
+            mafiabot.sendMessage(message.channel.id, `Admins of MafiaBot:${listUsers(allAdmins)}`);
+        },
+    },
+    {
+        commands: ['addadmin'],
+        description: 'Add a user as an admin',
+        adminOnly: true,
+        activatedOnly: false,
+        onMessage: (message, args) => {
+            if (!args[1]) {
+                mafiabot.reply(message, `Please provide a user ID to add as admin. Usage: ${pre}addadmin [user_id]`);
+                return;
+            }
+            
+            // Get user ID from mention or direct ID
+            let userId = args[1].replace(/[<@!>]/g, '');
+            
+            try {
+                // Read current database
+                let dbData = {};
+                try {
+                    dbData = JSON.parse(fs.readFileSync('./dbase.json').toString());
+                } catch (e) {
+                    // If file doesn't exist or is invalid, create a new object
+                }
+                
+                // Initialize admins array if it doesn't exist
+                if (!dbData.admins) {
+                    dbData.admins = [];
+                }
+                
+                // Check if user is already an admin
+                if (config.admins.indexOf(userId) >= 0) {
+                    mafiabot.reply(message, `User <@${userId}> is already an admin in the config file.`);
+                    return;
+                }
+                
+                if (dbData.admins.indexOf(userId) >= 0) {
+                    mafiabot.reply(message, `User <@${userId}> is already an admin in the database.`);
+                    return;
+                }
+                
+                // Add user to admins
+                dbData.admins.push(userId);
+                
+                // Save database
+                fs.writeFileSync('./dbase.json', JSON.stringify(dbData, null, 2));
+                
+                mafiabot.reply(message, `User <@${userId}> has been added as an admin.`);
+            } catch (e) {
+                console.error('Error adding admin:', e);
+                mafiabot.reply(message, `Error adding admin: ${e.message}`);
+            }
+        },
+    },
+    {
+        commands: ['removeadmin'],
+        description: 'Remove a user from admins',
+        adminOnly: true,
+        activatedOnly: false,
+        onMessage: (message, args) => {
+            if (!args[1]) {
+                mafiabot.reply(message, `Please provide a user ID to remove from admins. Usage: ${pre}removeadmin [user_id]`);
+                return;
+            }
+            
+            // Get user ID from mention or direct ID
+            let userId = args[1].replace(/[<@!>]/g, '');
+            
+            try {
+                // Read current database
+                let dbData = {};
+                try {
+                    dbData = JSON.parse(fs.readFileSync('./dbase.json').toString());
+                } catch (e) {
+                    // If file doesn't exist or is invalid, create a new object
+                }
+                
+                // Initialize admins array if it doesn't exist
+                if (!dbData.admins) {
+                    dbData.admins = [];
+                }
+                
+                // Check if user is in config admins
+                if (config.admins.indexOf(userId) >= 0) {
+                    mafiabot.reply(message, `User <@${userId}> is an admin in the config file. You need to modify the creds.js file to remove them.`);
+                    return;
+                }
+                
+                // Check if user is in database admins
+                const index = dbData.admins.indexOf(userId);
+                if (index === -1) {
+                    mafiabot.reply(message, `User <@${userId}> is not an admin in the database.`);
+                    return;
+                }
+                
+                // Remove user from admins
+                dbData.admins.splice(index, 1);
+                
+                // Save database
+                fs.writeFileSync('./dbase.json', JSON.stringify(dbData, null, 2));
+                
+                mafiabot.reply(message, `User <@${userId}> has been removed from admins.`);
+            } catch (e) {
+                console.error('Error removing admin:', e);
+                mafiabot.reply(message, `Error removing admin: ${e.message}`);
+            }
         },
     },
     {

@@ -1,13 +1,17 @@
 {
   "id" : "message.author.id",
-    "wins" : 2,
-    "total_played" : 3,
-    "winrate" : 66,
-    "winmir" : 1,
-    "windon" : 0,
-    "winsher" : 0,
-    "winmaff" : 1,
-    "windoc" : 0,
-    "rating" : 3846,
-    "commun" : 3482
+  "wins" : 2,
+  "total_played" : 3,
+  "winrate" : 66,
+  "winmir" : 1,
+  "windon" : 0,
+  "winsher" : 0,
+  "winmaff" : 1,
+  "windoc" : 0,
+  "rating" : 3846,
+  "commun" : 3482,
+  "admins": [
+    "88020438474567680"
+    // Add more admin user IDs here
+  ]
 }

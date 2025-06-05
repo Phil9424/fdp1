@@ -15,7 +15,7 @@ if (global.DEBUG) {
     };
 }
 module.exports = _.merge({
-    admins: [
+    admins: creds.admins || [
         '88020438474567680', // fool
     ],
     feedbackFilePath: 'data/feedback.txt',
