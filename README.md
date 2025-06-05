@@ -18,8 +18,30 @@ Join our public Mafia server if you want to try out the bot: http://discord.me/m
 
 ## Config
 
-Setup all the admin user ID values in `config.js`  
-Setup the bot's user token in `creds.js` (follow the [Discord developer guide](https://discordapp.com/developers/docs/intro) to get the token)  
+Setup your bot's token and admin user IDs in `creds.js` (follow the [Discord developer guide](https://discordapp.com/developers/docs/intro) to get your token):
+
+```js
+module.exports = {
+    token: 'YOUR_BOT_TOKEN_HERE',
+    admins: [
+        'USER_ID_1', // optional comment (e.g., username)
+        'USER_ID_2', // optional comment
+        // Add more admin IDs as needed
+    ],
+}
+```
+
+Admin users have access to special commands like activating/deactivating the bot in channels and deleting rolesets.
+
+### Admin Management
+
+There are three ways to manage admins:
+
+1. **Configuration file**: Add admin user IDs in the `creds.js` file (recommended for permanent admins)
+2. **Database**: Use the in-game commands to dynamically add/remove admins
+   - `--addadmin [user_id]`: Add a user as an admin (must be used by an existing admin)
+   - `--removeadmin [user_id]`: Remove a user from admins (must be used by an existing admin)
+3. **View admins**: Use the `--admins` command to see the current list of admins
 
 ## Run
 
